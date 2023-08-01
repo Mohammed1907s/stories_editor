@@ -96,7 +96,9 @@ class _StoriesEditorState extends State<StoriesEditor> {
         return false;
       },
       child: ScreenUtilInit(
-        designSize: const Size(1080, 1920),
+        designSize: const Size(393, 852),
+        minTextAdapt: true,
+        splitScreenMode: true,
         builder: (_, __) => MultiProvider(
           providers: [
             ChangeNotifierProvider(create: (_) => ControlNotifier()),
