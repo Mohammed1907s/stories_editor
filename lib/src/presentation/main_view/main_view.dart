@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gallery_media_picker/gallery_media_picker.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:provider/provider.dart';
+import 'package:render/render.dart';
 import 'package:stories_editor/src/domain/models/editable_items.dart';
 import 'package:stories_editor/src/domain/models/painting_model.dart';
 import 'package:stories_editor/src/domain/providers/notifiers/control_provider.dart';
@@ -82,6 +83,7 @@ class MainView extends StatefulWidget {
 class _MainViewState extends State<MainView> {
   /// content container key
   final GlobalKey contentKey = GlobalKey();
+  final controller = RenderController();
 
   ///Editable item
   EditableItem? _activeItem;
@@ -132,15 +134,10 @@ class _MainViewState extends State<MainView> {
         color: widget.editorBackgroundColor == Colors.transparent
             ? Colors.black
             : widget.editorBackgroundColor ?? Colors.black,
-        child: Consumer6<
-            ControlNotifier,
-            DraggableWidgetNotifier,
-            ScrollNotifier,
-            GradientNotifier,
-            PaintingNotifier,
-            TextEditingNotifier>(
-          builder: (context, controlNotifier, itemProvider, scrollProvider,
-              colorProvider, paintingProvider, editingProvider, child) {
+        child: Consumer6<ControlNotifier, DraggableWidgetNotifier, ScrollNotifier,
+            GradientNotifier, PaintingNotifier, TextEditingNotifier>(
+          builder: (context, controlNotifier, itemProvider, scrollProvider, colorProvider,
+              paintingProvider, editingProvider, child) {
             return SafeArea(
               //top: false,
               child: ScrollablePageView(
@@ -172,19 +169,16 @@ class _MainViewState extends State<MainView> {
                                 borderRadius: BorderRadius.circular(25),
                                 child: SizedBox(
                                   width: screenUtil.screenWidth,
-                                  child: RepaintBoundary(
+                                  child: Render(
                                     key: contentKey,
+                                    controller: controller,
                                     child: AnimatedContainer(
-                                      duration:
-                                          const Duration(milliseconds: 200),
+                                      duration: const Duration(milliseconds: 200),
                                       decoration: BoxDecoration(
-                                          gradient: controlNotifier
-                                                  .mediaPath.isEmpty
+                                          gradient: controlNotifier.mediaPath.isEmpty
                                               ? LinearGradient(
-                                                  colors: controlNotifier
-                                                          .gradientColors![
-                                                      controlNotifier
-                                                          .gradientIndex],
+                                                  colors: controlNotifier.gradientColors![
+                                                      controlNotifier.gradientIndex],
                                                   begin: Alignment.topLeft,
                                                   end: Alignment.bottomRight,
                                                 )
@@ -206,10 +200,8 @@ class _MainViewState extends State<MainView> {
                                             /// the gestures of all movable items.
                                             PhotoView.customChild(
                                               child: Container(),
-                                              backgroundDecoration:
-                                                  const BoxDecoration(
-                                                      color:
-                                                          Colors.transparent),
+                                              backgroundDecoration: const BoxDecoration(
+                                                  color: Colors.transparent),
                                             ),
 
                                             ///list items
@@ -247,25 +239,20 @@ class _MainViewState extends State<MainView> {
                                                 child: Container(
                                                   decoration: BoxDecoration(
                                                     borderRadius:
-                                                        BorderRadius.circular(
-                                                            25),
+                                                        BorderRadius.circular(25),
                                                   ),
                                                   child: RepaintBoundary(
                                                     child: SizedBox(
-                                                      width: screenUtil
-                                                          .screenWidth,
+                                                      width: screenUtil.screenWidth,
                                                       child: StreamBuilder<
                                                           List<PaintingModel>>(
                                                         stream: paintingProvider
-                                                            .linesStreamController
-                                                            .stream,
-                                                        builder: (context,
-                                                            snapshot) {
+                                                            .linesStreamController.stream,
+                                                        builder: (context, snapshot) {
                                                           return CustomPaint(
                                                             painter: Sketcher(
                                                               lines:
-                                                                  paintingProvider
-                                                                      .lines,
+                                                                  paintingProvider.lines,
                                                             ),
                                                           );
                                                         },
@@ -304,8 +291,7 @@ class _MainViewState extends State<MainView> {
                                           Shadow(
                                               offset: const Offset(1.0, 1.0),
                                               blurRadius: 3.0,
-                                              color: Colors.black45
-                                                  .withOpacity(0.3))
+                                              color: Colors.black45.withOpacity(0.3))
                                         ])),
                               ),
                             ),
@@ -319,14 +305,14 @@ class _MainViewState extends State<MainView> {
                                 child: TopTools(
                                   contentKey: contentKey,
                                   context: context,
+                                  controller: controller,
                                 )),
                           ),
 
                           /// delete item when the item is in position
                           DeleteItem(
                             activeItem: _activeItem,
-                            animationsDuration:
-                                const Duration(milliseconds: 300),
+                            animationsDuration: const Duration(milliseconds: 300),
                             isDeletePosition: _isDeletePosition,
                           ),
 
@@ -394,8 +380,7 @@ class _MainViewState extends State<MainView> {
                               curve: Curves.easeIn);
                         },
                         child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 2),
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                           decoration: BoxDecoration(
                               color: Colors.transparent,
                               borderRadius: BorderRadius.circular(10),
@@ -425,8 +410,7 @@ class _MainViewState extends State<MainView> {
 
   /// validate pop scope gesture
   Future<bool> _popScope() async {
-    final controlNotifier =
-        Provider.of<ControlNotifier>(context, listen: false);
+    final controlNotifier = Provider.of<ControlNotifier>(context, listen: false);
 
     /// change to false text editing
     if (controlNotifier.isTextEditing) {
@@ -442,8 +426,7 @@ class _MainViewState extends State<MainView> {
 
     /// show close dialog
     else if (!controlNotifier.isTextEditing && !controlNotifier.isPainting) {
-      return widget.onBackPress ??
-          exitDialog(context: context, contentKey: contentKey);
+      return widget.onBackPress ?? exitDialog(context: context, contentKey: contentKey);
     }
     return false;
   }
@@ -506,8 +489,7 @@ class _MainViewState extends State<MainView> {
   /// delete item widget with offset position
   void _deleteItemOnCoordinates(EditableItem item, PointerUpEvent details) {
     var _itemProvider =
-        Provider.of<DraggableWidgetNotifier>(context, listen: false)
-            .draggableWidget;
+        Provider.of<DraggableWidgetNotifier>(context, listen: false).draggableWidget;
     _inAction = false;
     if (item.type == ItemType.image) {
     } else if (item.type == ItemType.text &&
