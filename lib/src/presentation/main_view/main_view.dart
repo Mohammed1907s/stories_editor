@@ -203,9 +203,11 @@ class _MainViewState extends State<MainView> {
                             controlNotifier.isTextEditing =
                                 !controlNotifier.isTextEditing;
                             if (controlNotifier.isTextEditing) {
-                              showBottomSheet(
+                              showModalBottomSheet(
                                 context: context,
-                                builder: (context) {
+                                builder: (
+                                  context,
+                                ) {
                                   return TextEditor(context: context);
                                 },
                               );
