@@ -204,8 +204,8 @@ class _MainViewState extends State<MainView> {
                             if (controlNotifier.isTextEditing) {
                               showBottomSheet(
                                 context: context,
-                                builder: (context) {
-                                  return TextEditor();
+                                builder: (_) {
+                                  return TextEditor(context: _);
                                 },
                               );
                             }
