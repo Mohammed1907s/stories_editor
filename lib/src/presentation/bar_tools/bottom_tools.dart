@@ -49,11 +49,9 @@ class BottomTools extends StatelessWidget {
                                   onTap: () {
                                     /// scroll to gridView page
                                     if (controlNotifier.mediaPath.isEmpty) {
-                                      scrollNotifier.pageController
-                                          .animateToPage(1,
-                                              duration: const Duration(
-                                                  milliseconds: 300),
-                                              curve: Curves.ease);
+                                      scrollNotifier.pageController.animateToPage(1,
+                                          duration: const Duration(milliseconds: 300),
+                                          curve: Curves.ease);
                                     }
                                   },
                                   child: const CoverThumbnail(
@@ -146,28 +144,26 @@ class BottomTools extends StatelessWidget {
                                     left: 12, right: 5, top: 4, bottom: 4),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(15),
-                                    border: Border.all(
-                                        color: Colors.white, width: 1.5)),
-                                child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: const [
-                                      Text(
-                                        'Share',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            letterSpacing: 1.5,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w400),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(left: 5),
-                                        child: Icon(
-                                          Icons.arrow_forward_ios,
-                                          color: Colors.white,
-                                          size: 15,
-                                        ),
-                                      ),
-                                    ]),
+                                    border: Border.all(color: Colors.white, width: 1.5)),
+                                child:
+                                    Row(mainAxisSize: MainAxisSize.min, children: const [
+                                  Text(
+                                    'Share',
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        letterSpacing: 1.5,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(left: 5),
+                                    child: Icon(
+                                      Icons.arrow_forward_ios,
+                                      color: Colors.white,
+                                      size: 15,
+                                    ),
+                                  ),
+                                ]),
                               )),
                     ),
                   ),
