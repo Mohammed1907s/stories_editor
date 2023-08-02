@@ -14,8 +14,9 @@ import 'package:stories_editor/src/presentation/widgets/color_selector.dart';
 import 'package:stories_editor/src/presentation/widgets/size_slider_selector.dart';
 
 class TextEditor extends StatefulWidget {
-  final BuildContext context;
-  const TextEditor({Key? key, required this.context}) : super(key: key);
+  const TextEditor({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<TextEditor> createState() => _TextEditorState();
@@ -28,8 +29,7 @@ class _TextEditorState extends State<TextEditor> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      final _editorNotifier =
-          Provider.of<TextEditingNotifier>(widget.context, listen: false);
+      final _editorNotifier = Provider.of<TextEditingNotifier>(context, listen: false);
       _editorNotifier
         ..textController.text = _editorNotifier.text
         ..fontFamilyController = PageController(viewportFraction: .125);

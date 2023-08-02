@@ -205,7 +205,7 @@ class _MainViewState extends State<MainView> {
                               showBottomSheet(
                                 context: context,
                                 builder: (context) {
-                                  return TextEditor(context: context);
+                                  return TextEditor();
                                 },
                               );
                             }
