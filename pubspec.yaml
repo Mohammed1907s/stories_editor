@@ -1,6 +1,6 @@
 name: stories_editor
 description: This is a package created in the style of the instagram story creator, with which you can create images with images, texts, stickers (Gifs), finger drawing.
-version: 0.2.3+1
+version: 0.2.3+2
 homepage: https://github.com/camilo1498/stories_editor
 
 environment:
