@@ -103,15 +103,6 @@ class _MainViewState extends State<MainView> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       var _control = Provider.of<ControlNotifier>(context, listen: false);
 
-      if (_control.isTextEditing) {
-        showBottomSheet(
-          context: context,
-          builder: (context) {
-            return TextEditor(context: context);
-          },
-        );
-      }
-
       /// initialize control variable provider
       _control.giphyKey = widget.giphyKey;
       _control.middleBottomWidget = widget.middleBottomWidget;
@@ -210,6 +201,14 @@ class _MainViewState extends State<MainView> {
                           onTap: () {
                             controlNotifier.isTextEditing =
                                 !controlNotifier.isTextEditing;
+                            if (controlNotifier.isTextEditing) {
+                              showBottomSheet(
+                                context: context,
+                                builder: (context) {
+                                  return TextEditor(context: context);
+                                },
+                              );
+                            }
                           },
                           child: Align(
                             alignment: Alignment.topCenter,
