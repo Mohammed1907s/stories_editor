@@ -10,6 +10,7 @@ import 'package:stories_editor/src/domain/providers/notifiers/painting_notifier.
 import 'package:stories_editor/src/domain/providers/notifiers/scroll_notifier.dart';
 import 'package:stories_editor/src/domain/providers/notifiers/text_editing_notifier.dart';
 import 'package:stories_editor/src/presentation/main_view/main_view.dart';
+import 'package:stories_editor/src/presentation/text_editor_view/TextEditor.dart';
 
 export 'package:stories_editor/stories_editor.dart';
 
@@ -95,7 +96,10 @@ class _StoriesEditorState extends State<StoriesEditor> {
           ChangeNotifierProvider(create: (_) => DraggableWidgetNotifier()),
           ChangeNotifierProvider(create: (_) => GradientNotifier()),
           ChangeNotifierProvider(create: (_) => PaintingNotifier()),
-          ChangeNotifierProvider(create: (_) => TextEditingNotifier()),
+          ChangeNotifierProvider(
+            create: (_) => TextEditingNotifier(),
+            child: TextEditor(context: context),
+          ),
         ],
         child: MainView(
           giphyKey: widget.giphyKey,
