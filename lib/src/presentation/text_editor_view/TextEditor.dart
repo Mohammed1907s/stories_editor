@@ -44,94 +44,90 @@ class _TextEditorState extends State<TextEditor> {
         color: Colors.transparent,
         child: Consumer2<ControlNotifier, TextEditingNotifier>(
           builder: (_, controlNotifier, editorNotifier, __) {
-            return Scaffold(
-              backgroundColor: Colors.transparent,
-              body: GestureDetector(
-                /// onTap => Close view and create/modify item object
-                onTap: () => _onTap(context, controlNotifier, editorNotifier),
-                child: Container(
-                    decoration:
-                        BoxDecoration(color: Colors.black.withOpacity(0.5)),
-                    height: screenUtil.screenHeight,
-                    width: screenUtil.screenWidth,
-                    child: Stack(
-                      children: [
-                        /// text field
-                        const Align(
-                          alignment: Alignment.center,
-                          child: TextFieldWidget(),
-                        ),
+            return GestureDetector(
+              /// onTap => Close view and create/modify item object
+              onTap: () => _onTap(context, controlNotifier, editorNotifier),
+              child: Container(
+                  decoration: BoxDecoration(color: Colors.black.withOpacity(0.5)),
+                  height: screenUtil.screenHeight,
+                  width: screenUtil.screenWidth,
+                  child: Stack(
+                    children: [
+                      /// text field
+                      const Align(
+                        alignment: Alignment.center,
+                        child: TextFieldWidget(),
+                      ),
 
-                        /// text size
-                        const Align(
-                          alignment: Alignment.centerLeft,
-                          child: SizeSliderWidget(),
-                        ),
+                      /// text size
+                      const Align(
+                        alignment: Alignment.centerLeft,
+                        child: SizeSliderWidget(),
+                      ),
 
-                        /// top tools
-                        SafeArea(
-                          child: Align(
-                              alignment: Alignment.topCenter,
-                              child: TopTextTools(
-                                onDone: () => _onTap(
-                                    context, controlNotifier, editorNotifier),
-                              )),
-                        ),
+                      /// top tools
+                      SafeArea(
+                        child: Align(
+                            alignment: Alignment.topCenter,
+                            child: TopTextTools(
+                              onDone: () =>
+                                  _onTap(context, controlNotifier, editorNotifier),
+                            )),
+                      ),
 
-                        /// font family selector (bottom)
-                        Positioned(
-                          bottom: screenUtil.screenHeight * 0.21,
-                          child: Visibility(
-                            visible: editorNotifier.isFontFamily &&
+                      /// font family selector (bottom)
+                      Positioned(
+                        bottom: screenUtil.screenHeight * 0.21,
+                        child: Visibility(
+                          visible: editorNotifier.isFontFamily &&
+                              !editorNotifier.isTextAnimation,
+                          child: const Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Padding(
+                              padding: EdgeInsets.only(bottom: 20),
+                              child: FontSelector(),
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      /// font color selector (bottom)
+                      Positioned(
+                        bottom: screenUtil.screenHeight * 0.21,
+                        child: Visibility(
+                            visible: !editorNotifier.isFontFamily &&
                                 !editorNotifier.isTextAnimation,
                             child: const Align(
                               alignment: Alignment.bottomCenter,
                               child: Padding(
                                 padding: EdgeInsets.only(bottom: 20),
-                                child: FontSelector(),
+                                child: ColorSelector(),
                               ),
-                            ),
-                          ),
-                        ),
+                            )),
+                      ),
 
-                        /// font color selector (bottom)
-                        Positioned(
-                          bottom: screenUtil.screenHeight * 0.21,
-                          child: Visibility(
-                              visible: !editorNotifier.isFontFamily &&
-                                  !editorNotifier.isTextAnimation,
-                              child: const Align(
-                                alignment: Alignment.bottomCenter,
-                                child: Padding(
-                                  padding: EdgeInsets.only(bottom: 20),
-                                  child: ColorSelector(),
-                                ),
-                              )),
-                        ),
-
-                        /// font animation selector (bottom
-                        Positioned(
-                          bottom: screenUtil.screenHeight * 0.21,
-                          child: Visibility(
-                              visible: editorNotifier.isTextAnimation,
-                              child: const Align(
-                                alignment: Alignment.bottomCenter,
-                                child: Padding(
-                                  padding: EdgeInsets.only(bottom: 20),
-                                  child: AnimationSelector(),
-                                ),
-                              )),
-                        ),
-                      ],
-                    )),
-              ),
+                      /// font animation selector (bottom
+                      Positioned(
+                        bottom: screenUtil.screenHeight * 0.21,
+                        child: Visibility(
+                            visible: editorNotifier.isTextAnimation,
+                            child: const Align(
+                              alignment: Alignment.bottomCenter,
+                              child: Padding(
+                                padding: EdgeInsets.only(bottom: 20),
+                                child: AnimationSelector(),
+                              ),
+                            )),
+                      ),
+                    ],
+                  )),
             );
           },
         ));
   }
 
-  void _onTap(context, ControlNotifier controlNotifier,
-      TextEditingNotifier editorNotifier) {
+  void _onTap(
+      context, ControlNotifier controlNotifier, TextEditingNotifier editorNotifier) {
     final _editableItemNotifier =
         Provider.of<DraggableWidgetNotifier>(context, listen: false);
 
@@ -160,8 +156,7 @@ class _TextEditorState extends State<TextEditor> {
         ..fontAnimationIndex = editorNotifier.fontAnimationIndex
         ..textAlign = editorNotifier.textAlign
         ..textList = editorNotifier.textList
-        ..animationType =
-            editorNotifier.animationList[editorNotifier.fontAnimationIndex]
+        ..animationType = editorNotifier.animationList[editorNotifier.fontAnimationIndex]
         ..position = const Offset(0.0, 0.0));
       editorNotifier.setDefaults();
       controlNotifier.isTextEditing = !controlNotifier.isTextEditing;

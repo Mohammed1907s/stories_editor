@@ -103,6 +103,15 @@ class _MainViewState extends State<MainView> {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       var _control = Provider.of<ControlNotifier>(context, listen: false);
 
+      if (_control.isTextEditing) {
+        showBottomSheet(
+          context: context,
+          builder: (context) {
+            return TextEditor(context: context);
+          },
+        );
+      }
+
       /// initialize control variable provider
       _control.giphyKey = widget.giphyKey;
       _control.middleBottomWidget = widget.middleBottomWidget;
@@ -173,12 +182,12 @@ class _MainViewState extends State<MainView> {
                           ),
 
                           /// show text editor
-                          Visibility(
-                            visible: controlNotifier.isTextEditing,
-                            child: TextEditor(
-                              context: context,
-                            ),
-                          ),
+                          // Visibility(
+                          //   visible: controlNotifier.isTextEditing,
+                          //   child: TextEditor(
+                          //     context: context,
+                          //   ),
+                          // ),
 
                           /// show painting sketch
                           Visibility(
