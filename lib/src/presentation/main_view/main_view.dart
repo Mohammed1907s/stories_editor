@@ -107,14 +107,7 @@ class _MainViewState extends State<MainView> {
       _control.giphyKey = widget.giphyKey;
       _control.middleBottomWidget = widget.middleBottomWidget;
       _control.isCustomFontList = widget.isCustomFontList ?? false;
-      if (_control.isTextEditing) {
-        showBottomSheet(
-          context: context,
-          builder: (context) {
-            return TextEditor(context: context);
-          },
-        );
-      }
+
       if (widget.gradientColors != null) {
         _control.gradientColors = widget.gradientColors;
       }
@@ -209,6 +202,14 @@ class _MainViewState extends State<MainView> {
                           onTap: () {
                             controlNotifier.isTextEditing =
                                 !controlNotifier.isTextEditing;
+                            if (controlNotifier.isTextEditing) {
+                              showBottomSheet(
+                                context: context,
+                                builder: (context) {
+                                  return TextEditor(context: context);
+                                },
+                              );
+                            }
                           },
                           child: Align(
                             alignment: Alignment.topCenter,
