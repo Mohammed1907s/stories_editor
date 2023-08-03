@@ -208,7 +208,7 @@ class _MainViewState extends State<MainView> {
                                 builder: (
                                   context,
                                 ) {
-                                  return TextEditor(context: context);
+                                  return TextEditor();
                                 },
                               );
                             }
