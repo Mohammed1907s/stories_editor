@@ -27,12 +27,12 @@ class _TextEditorState extends State<TextEditor> {
   String lastSequenceList = '';
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      final _editorNotifier = context.watch<TextEditingNotifier>();
-      _editorNotifier
-        ..textController.text = _editorNotifier.text
-        ..fontFamilyController = PageController(viewportFraction: .125);
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    //   final _editorNotifier = context.watch<TextEditingNotifier>();
+    //   _editorNotifier
+    //     ..textController.text = _editorNotifier.text
+    //     ..fontFamilyController = PageController(viewportFraction: .125);
+    // });
     super.initState();
   }
 
