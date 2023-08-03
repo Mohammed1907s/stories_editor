@@ -167,7 +167,6 @@ class _MainViewState extends State<MainView> {
                                 borderRadius: BorderRadius.circular(25),
                                 child: SizedBox(
                                   width: screenUtil.screenWidth,
-                                  height: screenUtil.scaleHeight / 2,
                                   child: RepaintBoundary(
                                     key: contentKey,
                                     child: AnimatedContainer(
