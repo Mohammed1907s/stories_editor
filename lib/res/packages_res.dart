@@ -4,7 +4,7 @@
 // ignore_for_file: lines_longer_than_80_chars
 class PackagesRes {
   static const String PLUGIN_NAME = 'stories_editor';
-  static const String PLUGIN_VERSION = '0.2.3+9';
+  static const String PLUGIN_VERSION = '0.2.3+10';
   static const String ALIGN_CENTER =
       'packages/stories_editor/assets/icons/align_center.png';
   static const String ALIGN_LEFT = 'packages/stories_editor/assets/icons/align_left.png';
