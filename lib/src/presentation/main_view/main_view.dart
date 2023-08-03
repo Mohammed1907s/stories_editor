@@ -150,6 +150,18 @@ class _MainViewState extends State<MainView> {
               mainView: Column(
                 children: [
                   Expanded(
+                    child: Stack(
+                      children: [
+                        Visibility(
+                          visible: controlNotifier.isTextEditing,
+                          child: TextEditor(
+                            context: context,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
                       flex: 1,
                       child: Stack(
                         alignment: Alignment.center,
@@ -183,12 +195,7 @@ class _MainViewState extends State<MainView> {
                       )),
 
                   /// show text editor
-                  Visibility(
-                    visible: controlNotifier.isTextEditing,
-                    child: TextEditor(
-                      context: context,
-                    ),
-                  ),
+
                   Expanded(
                     flex: 2,
                     child: Stack(
