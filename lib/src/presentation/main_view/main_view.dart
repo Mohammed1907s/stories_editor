@@ -174,12 +174,12 @@ class _MainViewState extends State<MainView> {
                           ),
 
                           /// show text editor
-                          Visibility(
-                            visible: controlNotifier.isTextEditing,
-                            child: TextEditor(
-                              context: context,
-                            ),
-                          ),
+                          // Visibility(
+                          //   visible: controlNotifier.isTextEditing,
+                          //   child: TextEditor(
+                          //     context: context,
+                          //   ),
+                          // ),
 
                           /// show painting sketch
                           Visibility(
@@ -202,16 +202,16 @@ class _MainViewState extends State<MainView> {
                           onTap: () {
                             controlNotifier.isTextEditing =
                                 !controlNotifier.isTextEditing;
-                            // if (controlNotifier.isTextEditing) {
-                            //   showBottomSheet(
-                            //     context: context,
-                            //     builder: (
-                            //       context,
-                            //     ) {
-                            //       return TextEditor(context: context);
-                            //     },
-                            //   );
-                            // }
+                            if (controlNotifier.isTextEditing) {
+                              showBottomSheet(
+                                context: context,
+                                builder: (
+                                  context,
+                                ) {
+                                  return TextEditor(context: context);
+                                },
+                              );
+                            }
                           },
                           child: Align(
                             alignment: Alignment.topCenter,
