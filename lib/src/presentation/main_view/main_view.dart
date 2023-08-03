@@ -22,11 +22,12 @@ import 'package:stories_editor/src/presentation/draggable_items/delete_item.dart
 import 'package:stories_editor/src/presentation/draggable_items/draggable_widget.dart';
 import 'package:stories_editor/src/presentation/painting_view/painting.dart';
 import 'package:stories_editor/src/presentation/painting_view/widgets/sketcher.dart';
-import 'package:stories_editor/src/presentation/text_editor_view/TextEditor.dart';
 import 'package:stories_editor/src/presentation/utils/constants/app_enums.dart';
 import 'package:stories_editor/src/presentation/utils/modal_sheets.dart';
 import 'package:stories_editor/src/presentation/widgets/animated_onTap_button.dart';
 import 'package:stories_editor/src/presentation/widgets/scrollable_pageView.dart';
+
+import '../text_editor_view/TextEditor.dart';
 
 class MainView extends StatefulWidget {
   /// editor custom font families
@@ -208,11 +209,7 @@ class _MainViewState extends State<MainView> {
                                 builder: (
                                   context,
                                 ) {
-                                  return Provider<TextEditingNotifier>(
-                                      create: (_) => TextEditingNotifier(),
-                                      builder: (context, _) {
-                                        return TextEditor(context: context);
-                                      });
+                                  return TextEditor(context: context);
                                 },
                               );
                             }
