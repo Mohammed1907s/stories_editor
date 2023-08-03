@@ -168,99 +168,103 @@ class _MainViewState extends State<MainView> {
                                 child: SizedBox(
                                   width: screenUtil.screenWidth,
                                   height: 300,
-                                  child: RepaintBoundary(
-                                    key: contentKey,
-                                    child: AnimatedContainer(
-                                      duration: const Duration(milliseconds: 200),
-                                      decoration: BoxDecoration(
-                                          gradient: controlNotifier.mediaPath.isEmpty
-                                              ? LinearGradient(
-                                                  colors: controlNotifier.gradientColors![
-                                                      controlNotifier.gradientIndex],
-                                                  begin: Alignment.topLeft,
-                                                  end: Alignment.bottomRight,
-                                                )
-                                              : LinearGradient(
-                                                  colors: [
-                                                    colorProvider.color1,
-                                                    colorProvider.color2
-                                                  ],
-                                                  begin: Alignment.topCenter,
-                                                  end: Alignment.bottomCenter,
-                                                )),
-                                      child: GestureDetector(
-                                        onScaleStart: _onScaleStart,
-                                        onScaleUpdate: _onScaleUpdate,
-                                        child: Stack(
-                                          alignment: Alignment.center,
-                                          children: [
-                                            /// in this case photo view works as a main background container to manage
-                                            /// the gestures of all movable items.
-                                            PhotoView.customChild(
-                                              child: Container(),
-                                              backgroundDecoration: const BoxDecoration(
-                                                  color: Colors.transparent),
-                                            ),
+                                  child: Center(
+                                    child: RepaintBoundary(
+                                      key: contentKey,
+                                      child: AnimatedContainer(
+                                        duration: const Duration(milliseconds: 200),
+                                        decoration: BoxDecoration(
+                                            gradient: controlNotifier.mediaPath.isEmpty
+                                                ? LinearGradient(
+                                                    colors: controlNotifier
+                                                            .gradientColors![
+                                                        controlNotifier.gradientIndex],
+                                                    begin: Alignment.topLeft,
+                                                    end: Alignment.bottomRight,
+                                                  )
+                                                : LinearGradient(
+                                                    colors: [
+                                                      colorProvider.color1,
+                                                      colorProvider.color2
+                                                    ],
+                                                    begin: Alignment.topCenter,
+                                                    end: Alignment.bottomCenter,
+                                                  )),
+                                        child: GestureDetector(
+                                          onScaleStart: _onScaleStart,
+                                          onScaleUpdate: _onScaleUpdate,
+                                          child: Stack(
+                                            alignment: Alignment.center,
+                                            children: [
+                                              /// in this case photo view works as a main background container to manage
+                                              /// the gestures of all movable items.
+                                              PhotoView.customChild(
+                                                child: Container(),
+                                                backgroundDecoration: const BoxDecoration(
+                                                    color: Colors.transparent),
+                                              ),
 
-                                            ///list items
-                                            ...itemProvider.draggableWidget
-                                                .map((editableItem) {
-                                              return DraggableWidget(
-                                                context: context,
-                                                draggableWidget: editableItem,
-                                                onPointerDown: (details) {
-                                                  _updateItemPosition(
-                                                    editableItem,
-                                                    details,
-                                                  );
-                                                },
-                                                onPointerUp: (details) {
-                                                  _deleteItemOnCoordinates(
-                                                    editableItem,
-                                                    details,
-                                                  );
-                                                },
-                                                onPointerMove: (details) {
-                                                  _deletePosition(
-                                                    editableItem,
-                                                    details,
-                                                  );
-                                                },
-                                              );
-                                            }),
+                                              ///list items
+                                              ...itemProvider.draggableWidget
+                                                  .map((editableItem) {
+                                                return DraggableWidget(
+                                                  context: context,
+                                                  draggableWidget: editableItem,
+                                                  onPointerDown: (details) {
+                                                    _updateItemPosition(
+                                                      editableItem,
+                                                      details,
+                                                    );
+                                                  },
+                                                  onPointerUp: (details) {
+                                                    _deleteItemOnCoordinates(
+                                                      editableItem,
+                                                      details,
+                                                    );
+                                                  },
+                                                  onPointerMove: (details) {
+                                                    _deletePosition(
+                                                      editableItem,
+                                                      details,
+                                                    );
+                                                  },
+                                                );
+                                              }),
 
-                                            /// finger paint
-                                            IgnorePointer(
-                                              ignoring: true,
-                                              child: Align(
-                                                alignment: Alignment.topCenter,
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(25),
-                                                  ),
-                                                  child: RepaintBoundary(
-                                                    child: SizedBox(
-                                                      width: screenUtil.screenWidth,
-                                                      child: StreamBuilder<
-                                                          List<PaintingModel>>(
-                                                        stream: paintingProvider
-                                                            .linesStreamController.stream,
-                                                        builder: (context, snapshot) {
-                                                          return CustomPaint(
-                                                            painter: Sketcher(
-                                                              lines:
-                                                                  paintingProvider.lines,
-                                                            ),
-                                                          );
-                                                        },
+                                              /// finger paint
+                                              IgnorePointer(
+                                                ignoring: true,
+                                                child: Align(
+                                                  alignment: Alignment.topCenter,
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(25),
+                                                    ),
+                                                    child: RepaintBoundary(
+                                                      child: SizedBox(
+                                                        width: screenUtil.screenWidth,
+                                                        child: StreamBuilder<
+                                                            List<PaintingModel>>(
+                                                          stream: paintingProvider
+                                                              .linesStreamController
+                                                              .stream,
+                                                          builder: (context, snapshot) {
+                                                            return CustomPaint(
+                                                              painter: Sketcher(
+                                                                lines: paintingProvider
+                                                                    .lines,
+                                                              ),
+                                                            );
+                                                          },
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
                                                 ),
                                               ),
-                                            ),
-                                          ],
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
