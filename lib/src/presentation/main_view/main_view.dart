@@ -208,7 +208,11 @@ class _MainViewState extends State<MainView> {
                                 builder: (
                                   context,
                                 ) {
-                                  return TextEditor();
+                                  return Provider<TextEditingNotifier>(
+                                      create: (_) => TextEditingNotifier(),
+                                      builder: (context, _) {
+                                        return TextEditor(context: context);
+                                      });
                                 },
                               );
                             }
