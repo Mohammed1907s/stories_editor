@@ -207,9 +207,12 @@ class _MainViewState extends State<MainView> {
                               showBottomSheet(
                                 context: context,
                                 builder: (
-                                  context,
+                                  _,
                                 ) {
-                                  return TextEditor(context: context);
+                                  return Provider.value(
+                                      value: Provider.of<TextEditingNotifier>(context,
+                                          listen: false),
+                                      child: TextEditor());
                                 },
                               );
                             }
