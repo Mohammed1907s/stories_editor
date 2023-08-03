@@ -28,8 +28,7 @@ class _TextEditorState extends State<TextEditor> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      final _editorNotifier =
-          Provider.of<TextEditingNotifier>(widget.context, listen: false);
+      final _editorNotifier = context.watch<TextEditingNotifier>();
       _editorNotifier
         ..textController.text = _editorNotifier.text
         ..fontFamilyController = PageController(viewportFraction: .125);
