@@ -203,6 +203,13 @@ class _MainViewState extends State<MainView> {
                             controlNotifier.isTextEditing =
                                 !controlNotifier.isTextEditing;
                             if (controlNotifier.isTextEditing) {
+                              final _editorNotifier = Provider.of<TextEditingNotifier>(
+                                  context,
+                                  listen: false);
+                              _editorNotifier
+                                ..textController.text = _editorNotifier.text
+                                ..fontFamilyController =
+                                    PageController(viewportFraction: .125);
                               showModalBottomSheet(
                                 context: context,
                                 builder: (

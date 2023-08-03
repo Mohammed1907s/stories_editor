@@ -27,13 +27,7 @@ class _TextEditorState extends State<TextEditor> {
   String lastSequenceList = '';
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      final _editorNotifier =
-          Provider.of<TextEditingNotifier>(widget.context, listen: false);
-      _editorNotifier
-        ..textController.text = _editorNotifier.text
-        ..fontFamilyController = PageController(viewportFraction: .125);
-    });
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {});
     super.initState();
   }
 
