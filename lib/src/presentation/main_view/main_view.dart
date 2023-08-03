@@ -162,7 +162,7 @@ class _MainViewState extends State<MainView> {
                                   !controlNotifier.isTextEditing;
                             },
                             child: Align(
-                              alignment: Alignment.topCenter,
+                              alignment: Alignment.center,
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(25),
                                 child: SizedBox(
