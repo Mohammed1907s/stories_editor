@@ -14,8 +14,8 @@ import 'package:stories_editor/src/presentation/widgets/color_selector.dart';
 import 'package:stories_editor/src/presentation/widgets/size_slider_selector.dart';
 
 class TextEditor extends StatefulWidget {
-
-  const TextEditor({Key? key, }) : super(key: key);
+  final BuildContext context;
+  const TextEditor({Key? key, required this.context}) : super(key: key);
 
   @override
   State<TextEditor> createState() => _TextEditorState();
@@ -27,31 +27,28 @@ class _TextEditorState extends State<TextEditor> {
   String lastSequenceList = '';
   @override
   void initState() {
-    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-    //   final _editorNotifier =
-    //       Provider.of<TextEditingNotifier>(widget.context, listen: false);
-    //   _editorNotifier
-    //     ..textController.text = _editorNotifier.text
-    //     ..fontFamilyController = PageController(viewportFraction: .125);
-    // });
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      final _editorNotifier =
+          Provider.of<TextEditingNotifier>(widget.context, listen: false);
+      _editorNotifier
+        ..textController.text = _editorNotifier.text
+        ..fontFamilyController = PageController(viewportFraction: .125);
+    });
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     final ScreenUtil screenUtil = ScreenUtil();
-    return FractionallySizedBox(
-        heightFactor: 0.9,
-        child: DraggableScrollableSheet(
-            initialChildSize: 0.9,
-            maxChildSize: 1,
-            minChildSize: 0.9,
-            expand: true,
-            builder: (BuildContext context, ScrollController scrollController) {
-              return GestureDetector(
+    return Material(
+        color: Colors.transparent,
+        child: Consumer2<ControlNotifier, TextEditingNotifier>(
+          builder: (_, controlNotifier, editorNotifier, __) {
+            return Scaffold(
+              backgroundColor: Colors.transparent,
+              body: GestureDetector(
                 /// onTap => Close view and create/modify item object
-                onTap: () => _onTap(context, context.watch<ControlNotifier>(),
-                    context.watch<TextEditingNotifier>()),
+                onTap: () => _onTap(context, controlNotifier, editorNotifier),
                 child: Container(
                     decoration: BoxDecoration(color: Colors.black.withOpacity(0.5)),
                     height: screenUtil.screenHeight,
@@ -75,10 +72,8 @@ class _TextEditorState extends State<TextEditor> {
                           child: Align(
                               alignment: Alignment.topCenter,
                               child: TopTextTools(
-                                onDone: () => _onTap(
-                                    context,
-                                    context.watch<ControlNotifier>(),
-                                    context.watch<TextEditingNotifier>()),
+                                onDone: () =>
+                                    _onTap(context, controlNotifier, editorNotifier),
                               )),
                         ),
 
@@ -86,8 +81,8 @@ class _TextEditorState extends State<TextEditor> {
                         Positioned(
                           bottom: screenUtil.screenHeight * 0.21,
                           child: Visibility(
-                            visible: context.watch<TextEditingNotifier>().isFontFamily &&
-                                !context.watch<TextEditingNotifier>().isTextAnimation,
+                            visible: editorNotifier.isFontFamily &&
+                                !editorNotifier.isTextAnimation,
                             child: const Align(
                               alignment: Alignment.bottomCenter,
                               child: Padding(
@@ -102,10 +97,8 @@ class _TextEditorState extends State<TextEditor> {
                         Positioned(
                           bottom: screenUtil.screenHeight * 0.21,
                           child: Visibility(
-                              visible: !context
-                                      .watch<TextEditingNotifier>()
-                                      .isFontFamily &&
-                                  !context.watch<TextEditingNotifier>().isTextAnimation,
+                              visible: !editorNotifier.isFontFamily &&
+                                  !editorNotifier.isTextAnimation,
                               child: const Align(
                                 alignment: Alignment.bottomCenter,
                                 child: Padding(
@@ -119,8 +112,7 @@ class _TextEditorState extends State<TextEditor> {
                         Positioned(
                           bottom: screenUtil.screenHeight * 0.21,
                           child: Visibility(
-                              visible:
-                                  context.watch<TextEditingNotifier>().isTextAnimation,
+                              visible: editorNotifier.isTextAnimation,
                               child: const Align(
                                 alignment: Alignment.bottomCenter,
                                 child: Padding(
@@ -131,8 +123,10 @@ class _TextEditorState extends State<TextEditor> {
                         ),
                       ],
                     )),
-              );
-            }));
+              ),
+            );
+          },
+        ));
   }
 
   void _onTap(

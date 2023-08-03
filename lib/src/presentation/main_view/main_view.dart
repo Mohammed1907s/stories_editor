@@ -174,14 +174,6 @@ class _MainViewState extends State<MainView> {
                             isDeletePosition: _isDeletePosition,
                           ),
 
-                          /// show text editor
-                          // Visibility(
-                          //   visible: controlNotifier.isTextEditing,
-                          //   child: TextEditor(
-                          //     context: context,
-                          //   ),
-                          // ),
-
                           /// show painting sketch
                           Visibility(
                             visible: controlNotifier.isPainting,
@@ -189,6 +181,14 @@ class _MainViewState extends State<MainView> {
                           ),
                         ],
                       )),
+
+                  /// show text editor
+                  Visibility(
+                    visible: controlNotifier.isTextEditing,
+                    child: TextEditor(
+                      context: context,
+                    ),
+                  ),
                   Expanded(
                     flex: 2,
                     child: Stack(
@@ -203,19 +203,16 @@ class _MainViewState extends State<MainView> {
                           onTap: () {
                             controlNotifier.isTextEditing =
                                 !controlNotifier.isTextEditing;
-                            if (controlNotifier.isTextEditing) {
-                              showBottomSheet(
-                                context: context,
-                                builder: (
-                                  _,
-                                ) {
-                                  return Provider.value(
-                                      value: Provider.of<TextEditingNotifier>(context,
-                                          listen: false),
-                                      child: TextEditor());
-                                },
-                              );
-                            }
+                            // if (controlNotifier.isTextEditing) {
+                            //   showBottomSheet(
+                            //     context: context,
+                            //     builder: (
+                            //       _,
+                            //     ) {
+                            //       return TextEditor();
+                            //     },
+                            //   );
+                            // }
                           },
                           child: Align(
                             alignment: Alignment.topCenter,
