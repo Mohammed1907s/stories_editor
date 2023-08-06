@@ -263,7 +263,7 @@ class _MainViewState extends State<MainView> {
                                             IgnorePointer(
                                               ignoring: true,
                                               child: Align(
-                                                alignment: Alignment.center,
+                                                alignment: Alignment.topCenter,
                                                 child: Container(
                                                   decoration: BoxDecoration(
                                                     borderRadius:
@@ -289,6 +289,12 @@ class _MainViewState extends State<MainView> {
                                                   ),
                                                 ),
                                               ),
+                                            ),
+
+                                            /// show painting sketch
+                                            Visibility(
+                                              visible: controlNotifier.isPainting,
+                                              child: const Painting(),
                                             ),
                                           ],
                                         ),
@@ -325,12 +331,6 @@ class _MainViewState extends State<MainView> {
                             ),
 
                           /// top tools
-
-                          /// show painting sketch
-                          Visibility(
-                            visible: controlNotifier.isPainting,
-                            child: const Painting(),
-                          ),
                         ],
                       ),
                     ),
