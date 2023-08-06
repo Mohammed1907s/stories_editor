@@ -263,7 +263,7 @@ class _MainViewState extends State<MainView> {
                                             IgnorePointer(
                                               ignoring: true,
                                               child: Align(
-                                                alignment: Alignment.topCenter,
+                                                alignment: Alignment.center,
                                                 child: Container(
                                                   decoration: BoxDecoration(
                                                     borderRadius:
