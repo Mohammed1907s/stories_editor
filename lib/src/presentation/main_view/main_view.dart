@@ -148,6 +148,37 @@ class _MainViewState extends State<MainView> {
                 mainView: Column(
                   children: [
                     Expanded(
+                        child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Visibility(
+                          visible: !controlNotifier.isTextEditing &&
+                              !controlNotifier.isPainting,
+                          child: Align(
+                              alignment: Alignment.topCenter,
+                              child: TopTools(
+                                contentKey: contentKey,
+                                context: context,
+                              )),
+                        ),
+
+                        /// delete item when the item is in position
+                        DeleteItem(
+                          activeItem: _activeItem,
+                          animationsDuration: const Duration(milliseconds: 300),
+                          isDeletePosition: _isDeletePosition,
+                        ),
+
+                        /// show text editor
+                        Visibility(
+                          visible: controlNotifier.isTextEditing,
+                          child: TextEditor(
+                            context: context,
+                          ),
+                        ),
+                      ],
+                    )),
+                    Expanded(
                       child: Stack(
                         alignment: Alignment.center,
                         children: [
@@ -294,31 +325,6 @@ class _MainViewState extends State<MainView> {
                             ),
 
                           /// top tools
-                          Visibility(
-                            visible: !controlNotifier.isTextEditing &&
-                                !controlNotifier.isPainting,
-                            child: Align(
-                                alignment: Alignment.topCenter,
-                                child: TopTools(
-                                  contentKey: contentKey,
-                                  context: context,
-                                )),
-                          ),
-
-                          /// delete item when the item is in position
-                          DeleteItem(
-                            activeItem: _activeItem,
-                            animationsDuration: const Duration(milliseconds: 300),
-                            isDeletePosition: _isDeletePosition,
-                          ),
-
-                          /// show text editor
-                          Visibility(
-                            visible: controlNotifier.isTextEditing,
-                            child: TextEditor(
-                              context: context,
-                            ),
-                          ),
 
                           /// show painting sketch
                           Visibility(
