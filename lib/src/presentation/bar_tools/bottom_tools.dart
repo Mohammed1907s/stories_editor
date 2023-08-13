@@ -131,6 +131,7 @@ class BottomTools extends StatelessWidget {
                             await takePicture(
                                     contentKey: contentKey,
                                     context: context,
+                                    controller: controller,
                                     saveToGallery: false)
                                 .then((bytes) {
                               if (bytes != null) {

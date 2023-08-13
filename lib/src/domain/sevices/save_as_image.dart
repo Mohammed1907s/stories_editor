@@ -34,7 +34,7 @@ Future takePicture(
 
     final file = result?.output;
     if (file != null && saveToGallery) {
-      final result = await ImageGallerySaver.saveFile(file.path,name: 'stories_creator${DateTime.now()}.gif');
+      final result = await ImageGallerySaver.saveFile(file.path,name: 'stories_creator${DateTime.now()}');
       if (result != null) {
         return true;
       } else {
