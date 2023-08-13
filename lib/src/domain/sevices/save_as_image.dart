@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
@@ -10,9 +11,9 @@ import 'package:render/render.dart';
 
 Future takePicture(
     {required contentKey,
-    required BuildContext context,
-    RenderController? controller,
-    required saveToGallery}) async {
+      required BuildContext context,
+      RenderController? controller,
+      required saveToGallery}) async {
   try {
     /// converter widget to image
     RenderRepaintBoundary boundary = contentKey.currentContext.findRenderObject();
@@ -23,29 +24,34 @@ Future takePicture(
     Uint8List pngBytes = byteData!.buffer.asUint8List();
 
     /// create file
-    // final String dir = (await getApplicationDocumentsDirectory()).path;
-    // String imagePath = '$dir/stories_creator${DateTime.now()}.gif';
-    // await capturedFile.writeAsBytes(pngBytes);
-    final results = await controller?.captureMotion(
+    final String dir = (await getApplicationDocumentsDirectory()).path;
+    String imagePath = '$dir/stories_creator${DateTime.now()}.png';
+    File capturedFile = File(imagePath);
+    await capturedFile.writeAsBytes(pngBytes);
+    final result = await controller?.captureMotion(
       Duration(seconds: 5),
       format: GifFormat(),
     );
-    // final String dir = (await getApplicationDocumentsDirectory()).path;
-    // String imagePath = '$dir/stories_creator${DateTime.now()}.gif';
-    File capturedFile = results!.output;
-    debugPrint('capturedFile ${capturedFile.path}');
+   log('result $result');
+    final file = result?.output;
+    if (file != null) {
+      final result = await ImageGallerySaver.saveFile(file.path);
+      if (result != null) {
+        return true;
+      } else {
+        return false;
+      }
+    }
     if (saveToGallery) {
-      final file = results?.output;
-      if (file != null) {
-        final result = await ImageGallerySaver.saveFile(file.path,isReturnPathOfIOS: true);
-        if (result != null) {
-          return true;
-        } else {
-          return false;
-        }
+      final result = await ImageGallerySaver.saveImage(pngBytes,
+          quality: 100, name: "stories_creator${DateTime.now()}.png");
+      if (result != null) {
+        return true;
+      } else {
+        return false;
       }
     } else {
-      return capturedFile.path;
+      return imagePath;
     }
   } catch (e) {
     debugPrint('exception => $e');
