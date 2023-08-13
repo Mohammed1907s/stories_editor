@@ -38,7 +38,7 @@ Future createGiphyItem(
 }
 
 /// custom exit dialog
-Future<bool> exitDialog({required context, required contentKey}) async {
+Future<bool> exitDialog({required context, required contentKey,required controller}) async {
   return (await showDialog(
         context: context,
         barrierColor: Colors.black38,
@@ -129,6 +129,7 @@ Future<bool> exitDialog({required context, required contentKey}) async {
                         var response = await takePicture(
                             contentKey: contentKey,
                             context: context,
+                            controller: controller,
                             saveToGallery: true);
                         if (response) {
                           _dispose(

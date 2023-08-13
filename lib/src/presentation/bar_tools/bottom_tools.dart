@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gallery_media_picker/gallery_media_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:render/render.dart';
 import 'package:stories_editor/src/domain/providers/notifiers/control_provider.dart';
 import 'package:stories_editor/src/domain/providers/notifiers/draggable_widget_notifier.dart';
 import 'package:stories_editor/src/domain/providers/notifiers/scroll_notifier.dart';
@@ -12,7 +13,7 @@ class BottomTools extends StatelessWidget {
   final GlobalKey contentKey;
   final Function(String imageUri) onDone;
   final Widget? onDoneButtonStyle;
-
+  final RenderController? controller;
   /// editor background color
   final Color? editorBackgroundColor;
   const BottomTools(
@@ -20,7 +21,7 @@ class BottomTools extends StatelessWidget {
       required this.contentKey,
       required this.onDone,
       this.onDoneButtonStyle,
-      this.editorBackgroundColor})
+      this.editorBackgroundColor, this.controller})
       : super(key: key);
 
   @override

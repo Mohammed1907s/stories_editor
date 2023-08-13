@@ -343,6 +343,7 @@ class _MainViewState extends State<MainView> {
                     /// bottom tools
                     if (!kIsWeb)
                       BottomTools(
+                        controller: controller,
                         contentKey: contentKey,
                         onDone: (bytes) {
                           setState(() {
@@ -433,7 +434,7 @@ class _MainViewState extends State<MainView> {
 
     /// show close dialog
     else if (!controlNotifier.isTextEditing && !controlNotifier.isPainting) {
-      return widget.onBackPress ?? exitDialog(context: context, contentKey: contentKey);
+      return widget.onBackPress ?? exitDialog(context: context, contentKey: contentKey,controller: controller);
     }
     return false;
   }

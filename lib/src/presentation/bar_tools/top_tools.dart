@@ -45,6 +45,7 @@ class _TopToolsState extends State<TopTools> {
                     backGroundColor: Colors.black12,
                     onTap: () async {
                       var res = await exitDialog(
+                        controller: widget.controller,
                           context: widget.context, contentKey: widget.contentKey);
                       if (res) {
                         Navigator.pop(context);
