@@ -30,19 +30,20 @@ Future takePicture(
     await capturedFile.writeAsBytes(pngBytes);
     final result = await controller?.captureMotion(
       Duration(seconds: 5),
+      format: GifFormat()
     );
 
     final file = result?.output;
     log('result ${file?.path}');
     if (file != null && saveToGallery) {
-      final result = await ImageGallerySaver.saveFile(file.path,name: 'stories_creator${DateTime.now()}.gif');
+      final result = await ImageGallerySaver.saveFile(file.path,name: 'stories_creator${DateTime.now()}');
       if (result != null) {
         return true;
       } else {
         return false;
       }
     }else{
-      return imagePath;
+      return result?.output.path;
     }
     // if (saveToGallery) {
     //   final result = await ImageGallerySaver.saveImage(pngBytes,
