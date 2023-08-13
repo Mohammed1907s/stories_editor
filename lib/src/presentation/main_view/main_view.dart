@@ -7,6 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gallery_media_picker/gallery_media_picker.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:provider/provider.dart';
+import 'package:render/render.dart';
 import 'package:stories_editor/src/domain/models/editable_items.dart';
 import 'package:stories_editor/src/domain/models/painting_model.dart';
 import 'package:stories_editor/src/domain/providers/notifiers/control_provider.dart';
@@ -85,7 +86,7 @@ class _MainViewState extends State<MainView> {
 
   ///Editable item
   EditableItem? _activeItem;
-
+  final RenderController controller= RenderController();
   /// Gesture Detector listen changes
   Offset _initPos = const Offset(0, 0);
   Offset _currentPos = const Offset(0, 0);
@@ -159,6 +160,7 @@ class _MainViewState extends State<MainView> {
                               child: TopTools(
                                 contentKey: contentKey,
                                 context: context,
+                                controller: controller,
                               )),
                         ),
 
@@ -200,103 +202,106 @@ class _MainViewState extends State<MainView> {
                                   width: screenUtil.screenWidth,
                                   child: RepaintBoundary(
                                     key: contentKey,
-                                    child: AnimatedContainer(
-                                      duration: const Duration(milliseconds: 200),
-                                      decoration: BoxDecoration(
-                                          gradient: controlNotifier.mediaPath.isEmpty
-                                              ? LinearGradient(
-                                                  colors: controlNotifier.gradientColors![
-                                                      controlNotifier.gradientIndex],
-                                                  begin: Alignment.topLeft,
-                                                  end: Alignment.bottomRight,
-                                                )
-                                              : LinearGradient(
-                                                  colors: [
-                                                    colorProvider.color1,
-                                                    colorProvider.color2
-                                                  ],
-                                                  begin: Alignment.topCenter,
-                                                  end: Alignment.bottomCenter,
-                                                )),
-                                      child: GestureDetector(
-                                        onScaleStart: _onScaleStart,
-                                        onScaleUpdate: _onScaleUpdate,
-                                        child: Stack(
-                                          alignment: Alignment.center,
-                                          children: [
-                                            /// in this case photo view works as a main background container to manage
-                                            /// the gestures of all movable items.
-                                            PhotoView.customChild(
-                                              child: Container(),
-                                              backgroundDecoration: const BoxDecoration(
-                                                  color: Colors.transparent),
-                                            ),
+                                    child: Render(
+                                      controller: controller,
+                                      child: AnimatedContainer(
+                                        duration: const Duration(milliseconds: 200),
+                                        decoration: BoxDecoration(
+                                            gradient: controlNotifier.mediaPath.isEmpty
+                                                ? LinearGradient(
+                                                    colors: controlNotifier.gradientColors![
+                                                        controlNotifier.gradientIndex],
+                                                    begin: Alignment.topLeft,
+                                                    end: Alignment.bottomRight,
+                                                  )
+                                                : LinearGradient(
+                                                    colors: [
+                                                      colorProvider.color1,
+                                                      colorProvider.color2
+                                                    ],
+                                                    begin: Alignment.topCenter,
+                                                    end: Alignment.bottomCenter,
+                                                  )),
+                                        child: GestureDetector(
+                                          onScaleStart: _onScaleStart,
+                                          onScaleUpdate: _onScaleUpdate,
+                                          child: Stack(
+                                            alignment: Alignment.center,
+                                            children: [
+                                              /// in this case photo view works as a main background container to manage
+                                              /// the gestures of all movable items.
+                                              PhotoView.customChild(
+                                                child: Container(),
+                                                backgroundDecoration: const BoxDecoration(
+                                                    color: Colors.transparent),
+                                              ),
 
-                                            ///list items
-                                            ...itemProvider.draggableWidget
-                                                .map((editableItem) {
-                                              return DraggableWidget(
-                                                context: context,
-                                                draggableWidget: editableItem,
-                                                onPointerDown: (details) {
-                                                  _updateItemPosition(
-                                                    editableItem,
-                                                    details,
-                                                  );
-                                                },
-                                                onPointerUp: (details) {
-                                                  _deleteItemOnCoordinates(
-                                                    editableItem,
-                                                    details,
-                                                  );
-                                                },
-                                                onPointerMove: (details) {
-                                                  _deletePosition(
-                                                    editableItem,
-                                                    details,
-                                                  );
-                                                },
-                                              );
-                                            }),
+                                              ///list items
+                                              ...itemProvider.draggableWidget
+                                                  .map((editableItem) {
+                                                return DraggableWidget(
+                                                  context: context,
+                                                  draggableWidget: editableItem,
+                                                  onPointerDown: (details) {
+                                                    _updateItemPosition(
+                                                      editableItem,
+                                                      details,
+                                                    );
+                                                  },
+                                                  onPointerUp: (details) {
+                                                    _deleteItemOnCoordinates(
+                                                      editableItem,
+                                                      details,
+                                                    );
+                                                  },
+                                                  onPointerMove: (details) {
+                                                    _deletePosition(
+                                                      editableItem,
+                                                      details,
+                                                    );
+                                                  },
+                                                );
+                                              }),
 
-                                            /// finger paint
-                                            IgnorePointer(
-                                              ignoring: true,
-                                              child: Align(
-                                                alignment: Alignment.topCenter,
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(25),
-                                                  ),
-                                                  child: RepaintBoundary(
-                                                    child: SizedBox(
-                                                      width: screenUtil.screenWidth,
-                                                      child: StreamBuilder<
-                                                          List<PaintingModel>>(
-                                                        stream: paintingProvider
-                                                            .linesStreamController.stream,
-                                                        builder: (context, snapshot) {
-                                                          return CustomPaint(
-                                                            painter: Sketcher(
-                                                              lines:
-                                                                  paintingProvider.lines,
-                                                            ),
-                                                          );
-                                                        },
+                                              /// finger paint
+                                              IgnorePointer(
+                                                ignoring: true,
+                                                child: Align(
+                                                  alignment: Alignment.topCenter,
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(25),
+                                                    ),
+                                                    child: RepaintBoundary(
+                                                      child: SizedBox(
+                                                        width: screenUtil.screenWidth,
+                                                        child: StreamBuilder<
+                                                            List<PaintingModel>>(
+                                                          stream: paintingProvider
+                                                              .linesStreamController.stream,
+                                                          builder: (context, snapshot) {
+                                                            return CustomPaint(
+                                                              painter: Sketcher(
+                                                                lines:
+                                                                    paintingProvider.lines,
+                                                              ),
+                                                            );
+                                                          },
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
                                                 ),
                                               ),
-                                            ),
 
-                                            /// show painting sketch
-                                            Visibility(
-                                              visible: controlNotifier.isPainting,
-                                              child: const Painting(),
-                                            ),
-                                          ],
+                                              /// show painting sketch
+                                              Visibility(
+                                                visible: controlNotifier.isPainting,
+                                                child: const Painting(),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     ),
