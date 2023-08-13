@@ -130,7 +130,7 @@ Future<bool> exitDialog({required context, required contentKey}) async {
                             contentKey: contentKey,
                             context: context,
                             saveToGallery: true);
-                        if (response == true) {
+                        if (response) {
                           _dispose(
                               context: context, message: 'Successfully saved');
                         } else {

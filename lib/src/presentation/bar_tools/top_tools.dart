@@ -80,7 +80,7 @@ class _TopToolsState extends State<TopTools> {
                             context: context,
                             controller: widget.controller,
                             saveToGallery: true);
-                        if (response == true) {
+                        if (response) {
                           Fluttertoast.showToast(msg: 'Successfully saved');
                         } else {
                           Fluttertoast.showToast(msg: 'Error');

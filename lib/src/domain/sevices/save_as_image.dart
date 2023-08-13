@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
@@ -25,37 +24,34 @@ Future takePicture(
 
     /// create file
     final String dir = (await getApplicationDocumentsDirectory()).path;
-    String imagePath = '$dir/stories_creator${DateTime.now()}.gif';
+    String imagePath = '$dir/stories_creator${DateTime.now()}.png';
     File capturedFile = File(imagePath);
     await capturedFile.writeAsBytes(pngBytes);
     final result = await controller?.captureMotion(
       Duration(seconds: 5),
-      format: GifFormat()
+      format: GifFormat(),
     );
 
     final file = result?.output;
-    log('result ${file?.path}');
-    if (file != null && saveToGallery) {
-      final result = await ImageGallerySaver.saveFile(file.path,name: 'stories_creator${DateTime.now()}');
+    if (file != null) {
+      final result = await ImageGallerySaver.saveFile(file.path);
       if (result != null) {
         return true;
       } else {
         return false;
       }
-    }else{
-      return result?.output.path;
     }
-    // if (saveToGallery) {
-    //   final result = await ImageGallerySaver.saveImage(pngBytes,
-    //       quality: 100, name: "stories_creator${DateTime.now()}.png");
-    //   if (result != null) {
-    //     return true;
-    //   } else {
-    //     return false;
-    //   }
-    // } else {
-    //   return imagePath;
-    // }
+    if (saveToGallery) {
+      final result = await ImageGallerySaver.saveImage(pngBytes,
+          quality: 100, name: "stories_creator${DateTime.now()}.png");
+      if (result != null) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return imagePath;
+    }
   } catch (e) {
     debugPrint('exception => $e');
     return false;
