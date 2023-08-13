@@ -23,16 +23,17 @@ Future takePicture(
     Uint8List pngBytes = byteData!.buffer.asUint8List();
 
     /// create file
-    final String dir = (await getApplicationDocumentsDirectory()).path;
+    // final String dir = (await getApplicationDocumentsDirectory()).path;
     // String imagePath = '$dir/stories_creator${DateTime.now()}.gif';
     // await capturedFile.writeAsBytes(pngBytes);
     final results = await controller?.captureMotion(
       Duration(seconds: 5),
       format: GifFormat(),
     );
-
+    // final String dir = (await getApplicationDocumentsDirectory()).path;
+    // String imagePath = '$dir/stories_creator${DateTime.now()}.gif';
     File capturedFile = results!.output;
-
+    debugPrint('capturedFile ${capturedFile.path}');
     if (saveToGallery) {
       final file = results?.output;
       if (file != null) {
