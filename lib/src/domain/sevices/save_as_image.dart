@@ -25,35 +25,36 @@ Future takePicture(
 
     /// create file
     final String dir = (await getApplicationDocumentsDirectory()).path;
-    String imagePath = '$dir/stories_creator${DateTime.now()}.png';
+    String imagePath = '$dir/stories_creator${DateTime.now()}.gif';
     File capturedFile = File(imagePath);
     await capturedFile.writeAsBytes(pngBytes);
     final result = await controller?.captureMotion(
       Duration(seconds: 5),
-      format: GifFormat(),
     );
 
     final file = result?.output;
     log('result ${file?.path}');
     if (file != null && saveToGallery) {
-      final result = await ImageGallerySaver.saveFile(file.path);
+      final result = await ImageGallerySaver.saveFile(file.path,name: 'stories_creator${DateTime.now()}.gif');
       if (result != null) {
         return true;
       } else {
         return false;
       }
-    }
-    if (saveToGallery) {
-      final result = await ImageGallerySaver.saveImage(pngBytes,
-          quality: 100, name: "stories_creator${DateTime.now()}.png");
-      if (result != null) {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
+    }else{
       return imagePath;
     }
+    // if (saveToGallery) {
+    //   final result = await ImageGallerySaver.saveImage(pngBytes,
+    //       quality: 100, name: "stories_creator${DateTime.now()}.png");
+    //   if (result != null) {
+    //     return true;
+    //   } else {
+    //     return false;
+    //   }
+    // } else {
+    //   return imagePath;
+    // }
   } catch (e) {
     debugPrint('exception => $e');
     return false;
