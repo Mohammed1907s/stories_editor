@@ -36,26 +36,24 @@ Future takePicture(
     final file = result?.output;
     log('result ${file?.path}');
     if (file != null && saveToGallery) {
-      final result = await ImageGallerySaver.saveFile(file.path,name: '${DateTime.now()}');
+      final result = await ImageGallerySaver.saveFile(file.path);
       if (result != null) {
         return true;
       } else {
         return false;
       }
-    }else{
-      return file?.path??'';
     }
-    // if (saveToGallery) {
-    //   final result = await ImageGallerySaver.saveImage(pngBytes,
-    //       quality: 100, name: "stories_creator${DateTime.now()}.png");
-    //   if (result != null) {
-    //     return true;
-    //   } else {
-    //     return false;
-    //   }
-    // } else {
-    //   return imagePath;
-    // }
+    if (saveToGallery) {
+      final result = await ImageGallerySaver.saveImage(pngBytes,
+          quality: 100, name: "stories_creator${DateTime.now()}.png");
+      if (result != null) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return imagePath;
+    }
   } catch (e) {
     debugPrint('exception => $e');
     return false;
