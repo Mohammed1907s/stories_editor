@@ -37,26 +37,7 @@ Future takePicture(
     String? outputPath = result?.output?.path;
 
 
-    // if (outputPath != null) {
-    //   File outputFile = File(outputPath);
-    //
-    //   if (outputFile.existsSync()) {
-    //     String newFileName = '${DateTime.now()}.gif'; // Change this to your desired file name
-    //     String newPath = outputFile.parent.path + '/' + newFileName;
-    //
-    //     try {
-    //       await outputFile.rename(newPath);
-    //       // Renaming was successful
-    //     } catch (e) {
-    //       // Handle error if renaming fails
-    //       print('Error renaming file: $e');
-    //     }
-    //   } else {
-    //     print('Output file does not exist at path: $outputPath');
-    //   }
-    // } else {
-    //   print('No output file path available');
-    // }
+
     if (file != null && saveToGallery) {
       final result = await ImageGallerySaver.saveFile(file.path,name: 'stories_creator${DateTime.now()}');
       if (result != null) {
@@ -65,7 +46,26 @@ Future takePicture(
         return false;
       }
     }else{
-       return file?.path.replaceAll("output_main", 'stories_creator${DateTime.now()}');
+      if (outputPath != null) {
+        File outputFile = File(outputPath);
+
+        if (outputFile.existsSync()) {
+          String newFileName = '${DateTime.now()}.gif'; // Change this to your desired file name
+          String newPath = outputFile.parent.path + '/' + newFileName;
+
+          try {
+            await outputFile.rename(newPath);
+            // Renaming was successful
+          } catch (e) {
+            // Handle error if renaming fails
+            print('Error renaming file: $e');
+          }
+        } else {
+          print('Output file does not exist at path: $outputPath');
+        }
+      } else {
+        print('No output file path available');
+      }
     }
     // if (saveToGallery) {
     //   final result = await ImageGallerySaver.saveImage(pngBytes,
