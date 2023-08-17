@@ -28,12 +28,23 @@ Future takePicture(
     File capturedFile = File(imagePath);
     await capturedFile.writeAsBytes(pngBytes);
     final result = await controller?.captureMotion(
-      Duration(seconds: 5),
+      Duration(seconds: 3),
       format: GifFormat(),
+
     );
 
     final file = result?.output;
+    String? outputPath = result?.output?.path;
 
+    if (outputPath != null) {
+      File outputFile = File(outputPath);
+      String newFileName = '${DateTime.now()}.gif'; // Change this to your desired file name
+      String newPath = outputFile.parent.path + '/' + newFileName;
+
+      await outputFile.rename(newPath);
+
+      // Now, the file has been renamed to the new name and is available at newPath
+    }
     if (file != null && saveToGallery) {
       final result = await ImageGallerySaver.saveFile(file.path,name: 'stories_creator${DateTime.now()}');
       if (result != null) {
@@ -42,8 +53,7 @@ Future takePicture(
         return false;
       }
     }else{
-      final result = await ImageGallerySaver.saveFile(file!.path,name: 'stories_creator${DateTime.now()}');
-       return result?.path;
+       return outputPath;
     }
     // if (saveToGallery) {
     //   final result = await ImageGallerySaver.saveImage(pngBytes,
