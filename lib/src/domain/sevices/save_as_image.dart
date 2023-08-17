@@ -24,7 +24,7 @@ Future takePicture(
 
     /// create file
     final String dir = (await getApplicationDocumentsDirectory()).path;
-    String imagePath = '$dir/stories_creator${DateTime.now()}';
+    String imagePath = '$dir/stories_creator${DateTime.now()}.gif';
     File capturedFile = File(imagePath);
     await capturedFile.writeAsBytes(pngBytes);
     final result = await controller?.captureMotion(
