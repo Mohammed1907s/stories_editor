@@ -65,7 +65,9 @@ Future takePicture(
         return false;
       }
     }else{
-       return  result?.output.rename(imagePath);
+
+      File? capturedFile = await result?.output.rename(imagePath);
+       return capturedFile?.path ;
     }
     // if (saveToGallery) {
     //   final result = await ImageGallerySaver.saveImage(pngBytes,
